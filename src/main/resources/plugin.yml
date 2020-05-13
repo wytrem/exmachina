@@ -1,0 +1,14 @@
+main: net.wytrem.spigot.exmachina.ExMachina
+name: ExMachina
+version: 1.0
+author: wytrem
+api-version: "1.14"
+commands:
+  script:
+    description: Main script command
+    usage: /script <command> <arguments>
+    permission: script.use
+permissions:
+  script.use:
+    description: Allows to use /script
+    default: op

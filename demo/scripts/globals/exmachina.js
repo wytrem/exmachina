@@ -1,5 +1,5 @@
 var ExMachina = Java.type("net.wytrem.spigot.exmachina.ExMachina");
-var ScriptRef = Java.type("net.wytrem.spigot.exmachina.ScriptRef");
+var ScriptRef = Java.type("net.wytrem.spigot.exmachina.refs.ScriptRef");
 
 function run(scriptPath) {
     return ExMachina.instance.eval(ScriptRef.fromPath(scriptPath));
@@ -29,4 +29,3 @@ function removeFirstElements(array, count) {
 function removeFirstArg(args) {
     return removeFirstelements(args, 1);
 }
-

@@ -1,26 +1,23 @@
-package net.wytrem.spigot.exmachina;
+package net.wytrem.spigot.exmachina.refs;
 
-import com.google.common.base.MoreObjects;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
 import java.nio.file.Path;
-import java.util.Objects;
 
 /**
  * A script reference. Stores all the information needed to retrieve the source code.
  */
-public class ScriptRef {
+public abstract class ScriptRef implements ConfigurationSerializable {
 
     /**
-     * The script's path, relative to the scripts/ folder and without extension.
+     *
+     * Creates a new {@link ScriptRef} from the given script source code.
+     *
+     * @param source The script source code
+     * @return a new {@link ScriptRef} holding the given source code
      */
-    private final String path;
-
-    private ScriptRef(String path) {
-        this.path = path;
-    }
-
-    public String getPath() {
-        return path;
+    public static ScriptRef inline(String source) {
+        return new Inline(source);
     }
 
     /**
@@ -34,7 +31,7 @@ public class ScriptRef {
         // Remove extension if any.
         path = path.replaceFirst("[.][^.]+$", "");
 
-        return new ScriptRef(path);
+        return new FromPath(path);
     }
 
     /**
@@ -45,25 +42,5 @@ public class ScriptRef {
      */
     public static ScriptRef fromPath(Path path) {
         return fromPath(path.toString());
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ScriptRef scriptRef = (ScriptRef) o;
-        return Objects.equals(path, scriptRef.path);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(path);
-    }
-
-    @Override
-    public String toString() {
-        return MoreObjects.toStringHelper(this)
-                .add("path", path)
-                .toString();
     }
 }

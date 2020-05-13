@@ -3,6 +3,8 @@ package net.wytrem.spigot.exmachina;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.LoadingCache;
 import com.google.common.io.Files;
+import net.wytrem.spigot.exmachina.refs.FromPath;
+import net.wytrem.spigot.exmachina.refs.ScriptRef;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -49,7 +51,7 @@ public class ExMachina extends JavaPlugin {
         // Create the engine
         {
             // Work around the default nashorn ClassLoader
-            // TODO: use a more general ClassLoader to allow acessing plugin classes without warning
+            // TODO: use a more general ClassLoader to allow accessing plugin classes without warning
             ClassLoader previousClassLoader = Thread.currentThread().getContextClassLoader();
             if (engineName.equals(NASHORN)) {
                 Thread.currentThread().setContextClassLoader(this.getClassLoader());
@@ -237,6 +239,9 @@ public class ExMachina extends JavaPlugin {
      * @return The script {@link File} for the current {@link ScriptLoader}
      */
     public File getScriptFile(ScriptRef ref) {
-        return this.loader.getScriptFile(ref);
+        if (ref instanceof FromPath) {
+            return this.loader.getScriptFile(((FromPath) ref));
+        }
+        return null;
     }
 }

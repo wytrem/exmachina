@@ -1,10 +1,18 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+
 plugins {
     id "java"
     id "com.github.johnrengelman.shadow" version "5.1.0"
 }
 
 group 'net.wytrem.spigot'
-version '1.0'
+version '1.0.1'
+
+description = 'JS scripting facility for spigot'
+
+String apiVersion = '1.14'
+String author = 'wytrem'
+String website = 'https://github.com/wytrem/exmachina/wiki'
 
 sourceCompatibility = 1.8
 
@@ -25,6 +33,17 @@ dependencies {
 //    compileOnly 'org.spigotmc:spigot:1.14.4-R0.1-SNAPSHOT' // The full Spigot server with no shadowing. Requires mavenLocal.
 //    compileOnly 'org.bukkit:craftbukkit:1.14.4-R0.1-SNAPSHOT' // The full CraftBukkit server with no shadowing. Requires mavenLocal.
 }
+
+tasks.processResources {
+    filter ReplaceTokens, tokens: [
+            "version"    : project.version,
+            "apiVersion" : apiVersion,
+            "description": project.description,
+            "author"     : author,
+            "website"    : website
+    ]
+}
+
 
 shadowJar {
 }

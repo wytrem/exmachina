@@ -2,6 +2,9 @@ package net.wytrem.spigot.exmachina;
 
 import com.google.common.cache.CacheLoader;
 import com.google.common.io.Files;
+import net.wytrem.spigot.exmachina.refs.FromPath;
+import net.wytrem.spigot.exmachina.refs.Inline;
+import net.wytrem.spigot.exmachina.refs.ScriptRef;
 
 import java.io.File;
 import java.nio.charset.StandardCharsets;
@@ -29,10 +32,20 @@ public class ScriptLoader extends CacheLoader<ScriptRef, Script> {
      */
     @Override
     public Script load(ScriptRef key) throws Exception {
-        return new Script(Files.toString(getScriptFile(key), StandardCharsets.UTF_8));
+        if (key instanceof FromPath) {
+            FromPath fromPath = (FromPath) key;
+
+            return new Script(Files.toString(getScriptFile(fromPath), StandardCharsets.UTF_8));
+        }
+        else if (key instanceof Inline) {
+            return new Script(((Inline) key).getSource());
+        }
+        else {
+            throw new UnsupportedOperationException("Unknown ScriptRef type: " + key.getClass());
+        }
     }
 
-    public File getScriptFile(ScriptRef ref) {
+    public File getScriptFile(FromPath ref) {
         return this.scriptsFolder.toPath().resolve(ref.getPath() + this.scriptFilesSuffix).toFile();
     }
 }

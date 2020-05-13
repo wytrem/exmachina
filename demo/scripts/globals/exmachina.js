@@ -27,5 +27,5 @@ function removeFirstElements(array, count) {
 }
 
 function removeFirstArg(args) {
-    return removeFirstelements(args, 1);
+    return removeFirstElements(args, 1);
 }

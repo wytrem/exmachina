@@ -1,8 +1,10 @@
 main: net.wytrem.spigot.exmachina.ExMachina
 name: ExMachina
-version: 1.0
+version: @version@
+api-version: @apiVersion@
+description: @description@
 author: wytrem
-api-version: "1.14"
+website: @website@
 commands:
   script:
     description: Main script command

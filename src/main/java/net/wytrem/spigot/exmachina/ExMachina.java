@@ -3,10 +3,12 @@ package net.wytrem.spigot.exmachina;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.LoadingCache;
 import com.google.common.io.Files;
-import net.wytrem.spigot.exmachina.refs.FromPath;
+import net.wytrem.spigot.exmachina.refs.FromFile;
+import net.wytrem.spigot.exmachina.refs.InlineImpl;
 import net.wytrem.spigot.exmachina.refs.ScriptRef;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import javax.script.*;
@@ -19,7 +21,7 @@ import java.util.stream.IntStream;
 public class ExMachina extends JavaPlugin {
     private static final String NASHORN = "nashorn";
 
-    public static ExMachina instance;
+    private static ExMachina instance;
 
     private ScriptEngine scriptEngine;
     private File scriptsFolder;
@@ -35,6 +37,13 @@ public class ExMachina extends JavaPlugin {
 
     // Globals
     private Collection<Script> globals;
+
+
+    static {
+        // Registering serialized types
+        ConfigurationSerialization.registerClass(InlineImpl.class);
+        ConfigurationSerialization.registerClass(FromFile.class);
+    }
 
     @Override
     public void onEnable() {
@@ -73,7 +82,7 @@ public class ExMachina extends JavaPlugin {
         }
 
         // Commands
-        this.getCommand("script").setExecutor(this);
+        this.getCommand("exmachina").setExecutor(this);
 
         // Creating script loader, and cache if needed
         this.scriptsFolder = new File(this.getDataFolder(), "scripts");
@@ -125,6 +134,12 @@ public class ExMachina extends JavaPlugin {
 
             return true;
         }
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        // TODO: list commands
+        return super.onTabComplete(sender, command, alias, args);
     }
 
     private ScriptContext createDefaultContext() throws ScriptException {
@@ -239,9 +254,16 @@ public class ExMachina extends JavaPlugin {
      * @return The script {@link File} for the current {@link ScriptLoader}
      */
     public File getScriptFile(ScriptRef ref) {
-        if (ref instanceof FromPath) {
-            return this.loader.getScriptFile(((FromPath) ref));
+        if (ref instanceof FromFile) {
+            return this.loader.getScriptFile(((FromFile) ref));
         }
         return null;
+    }
+
+    /**
+     * @return the ExMachina instance
+     */
+    public static ExMachina get() {
+        return instance;
     }
 }

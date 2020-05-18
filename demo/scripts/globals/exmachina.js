@@ -2,7 +2,7 @@ var ExMachina = Java.type("net.wytrem.spigot.exmachina.ExMachina");
 var ScriptRef = Java.type("net.wytrem.spigot.exmachina.refs.ScriptRef");
 
 function run(scriptPath) {
-    return ExMachina.instance.eval(ScriptRef.fromPath(scriptPath));
+    return ExMachina.get().eval(ScriptRef.fromPath(scriptPath));
 }
 
 function run(scriptPath, bindings) {
@@ -10,11 +10,11 @@ function run(scriptPath, bindings) {
     for (var key in bindings) {
         bindingsMap.put(key, bindings[key]);
     }
-    return ExMachina.instance.eval(ScriptRef.fromPath(scriptPath), bindingsMap);
+    return ExMachina.get().eval(ScriptRef.fromPath(scriptPath), bindingsMap);
 }
 
 function require(scriptPath) {
-    load(ExMachina.instance.getScriptFile(ScriptRef.fromPath(scriptPath)));
+    load(ExMachina.get().getScriptFile(ScriptRef.fromPath(scriptPath)));
 }
 
 function removeFirstElements(array, count) {

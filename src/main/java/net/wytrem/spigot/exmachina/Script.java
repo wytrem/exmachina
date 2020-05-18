@@ -2,6 +2,9 @@ package net.wytrem.spigot.exmachina;
 
 import com.google.common.base.MoreObjects;
 
+/**
+ * A script (ie. a source code).
+ */
 public class Script {
     private final String sourceCode;
 

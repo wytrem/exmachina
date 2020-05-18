@@ -7,17 +7,16 @@ import java.nio.file.Path;
 /**
  * A script reference. Stores all the information needed to retrieve the source code.
  */
-public abstract class ScriptRef implements ConfigurationSerializable {
+public interface ScriptRef extends ConfigurationSerializable {
 
     /**
-     *
      * Creates a new {@link ScriptRef} from the given script source code.
      *
      * @param source The script source code
      * @return a new {@link ScriptRef} holding the given source code
      */
-    public static ScriptRef inline(String source) {
-        return new Inline(source);
+    static ScriptRef inline(String source) {
+        return new InlineImpl(source);
     }
 
     /**
@@ -26,12 +25,12 @@ public abstract class ScriptRef implements ConfigurationSerializable {
      * @param path The script's path, relative to the scripts/ folder and without extension
      * @return a new {@link ScriptRef} pointing to the given path
      */
-    public static ScriptRef fromPath(String path) {
+    static ScriptRef fromPath(String path) {
         // TODO: fix this better
         // Remove extension if any.
         path = path.replaceFirst("[.][^.]+$", "");
 
-        return new FromPath(path);
+        return new FromFile(path);
     }
 
     /**
@@ -40,7 +39,7 @@ public abstract class ScriptRef implements ConfigurationSerializable {
      * @param path The script's path, relative to the scripts/ folder and without extension
      * @return a new {@link ScriptRef} pointing to the given path
      */
-    public static ScriptRef fromPath(Path path) {
+    static ScriptRef fromPath(Path path) {
         return fromPath(path.toString());
     }
 }

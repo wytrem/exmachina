@@ -2,6 +2,7 @@ import org.apache.tools.ant.filters.ReplaceTokens
 
 plugins {
     id "java"
+    id "maven-publish"
     id "com.github.johnrengelman.shadow" version "5.1.0"
 }
 
@@ -46,4 +47,14 @@ tasks.processResources {
 
 
 shadowJar {
+}
+
+
+publishing {
+  publications {
+    shadow(MavenPublication) { publication ->
+      artifactId "exmachina"
+      project.shadow.component(publication)
+    }
+  }
 }

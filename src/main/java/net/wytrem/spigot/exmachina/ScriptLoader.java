@@ -2,7 +2,7 @@ package net.wytrem.spigot.exmachina;
 
 import com.google.common.cache.CacheLoader;
 import com.google.common.io.Files;
-import net.wytrem.spigot.exmachina.refs.FromPath;
+import net.wytrem.spigot.exmachina.refs.FromFile;
 import net.wytrem.spigot.exmachina.refs.Inline;
 import net.wytrem.spigot.exmachina.refs.ScriptRef;
 
@@ -32,8 +32,8 @@ public class ScriptLoader extends CacheLoader<ScriptRef, Script> {
      */
     @Override
     public Script load(ScriptRef key) throws Exception {
-        if (key instanceof FromPath) {
-            FromPath fromPath = (FromPath) key;
+        if (key instanceof FromFile) {
+            FromFile fromPath = (FromFile) key;
 
             return new Script(Files.toString(getScriptFile(fromPath), StandardCharsets.UTF_8));
         }
@@ -45,7 +45,7 @@ public class ScriptLoader extends CacheLoader<ScriptRef, Script> {
         }
     }
 
-    public File getScriptFile(FromPath ref) {
+    public File getScriptFile(FromFile ref) {
         return this.scriptsFolder.toPath().resolve(ref.getPath() + this.scriptFilesSuffix).toFile();
     }
 }

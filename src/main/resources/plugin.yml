@@ -6,11 +6,11 @@ description: @description@
 author: wytrem
 website: @website@
 commands:
-  script:
-    description: Main script command
-    usage: /script <command> <arguments>
-    permission: script.use
+  exmachina:
+    description: Main ExMachina command
+    usage: /exmachina <command> <arguments>
+    permission: exmachina.use
 permissions:
   script.use:
-    description: Allows to use /script
+    description: Allows to use /exmachina
     default: op
